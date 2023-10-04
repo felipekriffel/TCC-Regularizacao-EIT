@@ -1,0 +1,194 @@
+\chapter{Tomografia por Impedância Elétrica}
+
+A Tomografia por Impedância Elétrica (ou Electrical Impedance Tomography - EIT), tal como explicam \citeonline{somersalo}, \citeonline{cheney} e \citeonline{borcea:2002},  consiste no seguinte problema: algumas correntes elétricas são aplicadas na superfície de um corpo, e, a partir dos potenciais elétricos resultantes medidos em sua superfície, tenta-se reconstruir uma imagem de seu interior, com base em sua impedância ou condutividade elétrica. 
+
+Esse problema possui uma grande variedade de aplicações, que vão desde exame médico de imagem, análise de fluido multifásico, localização de minérios e materiais no interior da terra, controle de processos industriais, entre muitas outras \cite{cheney}. Devido a sua relevância, é um tema de grande interesse, amplamente estudado há algumas décadas, com diversos estudos buscando modelagens e soluções para o problema.
+
+As principais descrições para a TIE na literatura trazem sua modelagem como um Problema Inverso. Dentre os principais modelos matemáticos que tentam descrever o problema da Tomografia Elétrica, neste trabalho focaremos nos chamados Modelo Contínuo e Modelo Completo de Eletrodos. Na seguinte seção, trazemos uma descrição de cada modelo, buscando descrever brevemente a interpretação física em torno dos conceitos abordados, relacionando com a formulação matemática, descrevendo desde a boa-definição do Problema Direto até a formulação do Problema Inverso em si.
+
+\section{Modelo Contínuo}
+
+Nesta seção, descrevemos o chamado Modelo Contínuo, o qual consiste no primeiro modelo proposto para a Tomografia por Impedância Elétrica. Foi trazido inicialmente pelo matemático Alberto Calderón em 1980, num artigo denominado "\textit{On an inverse boundary problem}" \footnote{"Sobre um problema inverso de fronteira" (Tradução Livre)} \cite{calderon}. Trazemos a seguir uma descrição do modelo, junto a uma breve descrição e interpretações dos conceitos físicos envolvidos.
+
+\subsection{Hipóteses do Modelo Contínuo}
+
+No contexto deste trabalho, consideramos o caso da Tomografia respectiva a uma seção transversal do corpo, uma "fatia horizontal", destacando, entretanto, que o problema pode ser aplicado também para o caso tridimensional. Assim, consideramos o domínio como um conjunto $\Omega \subset \mathbb R^2$ conexo e Lipschitz, tendo uma superfície consistindo na fronteira $\partial \Omega \subset \Omega$.
+
+Como descrevem \cite{halliday}, correntes elétricas consistem essencialmente no fluxo de cargas elétricas, partículas, atravessando um meio. Ocorre que cada corpo, dependendo dos materiais que o compõem, tem uma propensão a permitir mais ou menos essa passagem de cargas, afetando como elas o atravessam. Uma das medidas para essa característica é a chamada condutividade elétrica, constante que indica o quanto um material é suscetível à condução de eletricidade. Como cada material possui uma condutividade própria, dado um corpo $\Omega$ heterogêneo composto de diferentes materiais, podemos modelá-la em cada ponto como uma função $\gamma : \Omega \to \mathbb R$, indicando a condutividade em cada ponto.
+
+Ao ter um corpo eletricamente carregado temos outras duas medidas importantes: a corrente elétrica $g$, que consiste na taxa de cargas que atravessam cada ponto, e o potencial elétrico $u$, que consiste na energia potencial referente a uma certa quantidade de carga em um dado ponto. Podemos modelar o potencial como uma função $u: \Omega \to \mathbb R$, representando o potencial elétrico em cada ponto de $\Omega$. e a corrente elétrica uma função $g: \partial \Omega \to \mathbb R$ restrita à superfície, sendo ela o domínio de interesse para tal grandeza nesse modelo.
+
+O Modelo Contínuo é composto basicamente de duas equações-base. A primeira, conforme mostra \citeonline{borcea:2002}, pode ser obtida a partir das leis do eletromagnetismo. Ela estabelece que:
+
+\begin{equation}\label{eq:divergencia-livre}
+    \nabla \cdot (\gamma(x) \nabla u(x)) = 0, \; x\in \Omega
+\end{equation}
+
+O termo $\gamma(x) \nabla u(x)$ é conhecido como densidade de corrente no ponto $x$, indicando a direção e a densidade de cargas passando nesse ponto. A Equação \ref{eq:divergencia-livre} informa que a corrente elétrica não é gerada nem se perde ao longo do corpo, indicando que o balanço do fluxo de cargas é nulo ao longo do corpo. 
+
+Outra das equações do Modelo Contínuo estabelece que a corrente $g$ em cada ponto da superfície corresponde ao fluxo normal da corrente elétrica, o quanto de corrente está atravessando para fora do corpo, dando a relação:
+
+\begin{equation}\label{eq:corrente-continua}
+\gamma(x) \frac{\partial u}{\partial \eta}(x) = g(x), \; x \in \partial \Omega,
+\end{equation}
+onde $\eta: \partial \Omega \to \mathbb R^2$ é o campo vetorial normal unitário externo a $\Omega$, que representa o vetor normal $\eta(x)$ a cada ponto $x \in \partial \Omega$. 
+
+\subsection{Formulação do Problema Direto}
+
+Nossa ideia, até o final dessa seção, é o descrever o Problema Inverso da TIE. Porém, antes disso precisamos compreender se o Problema Direto relacionado está bem definido. Isto é, dada uma certa corrente aplicada sobre um corpo com determinada condutividade, existe um único potencial resultante?  
+
+Juntando as Equações \eqref{eq:divergencia-livre} e \eqref{eq:corrente-continua}, temos a formulação do Problema Direto a partir do Modelo Contínuo da Tomografia por Impedância Elétrica, que consiste em: aplicando uma corrente elétrica $g : \partial \Omega$ em um determinado corpo de condutividade $\gamma : \Omega \to \mathbb R$, obter o potencial elétrico gerado $u: \Omega \to \mathbb R$ satisfazendo
+
+\begin{align}\label{eq:modelo-continuo}
+\begin{cases}
+\nabla \cdot (\gamma(x) \nabla u(x)) = 0, \; x\in \Omega \\
+\gamma(x) \frac{\partial u}{\partial \eta}(x) = g(x), \; x \in \partial \Omega. \\
+\end{cases}
+\end{align}
+
+Aqui supõe-se que $g$ é inteiramente conhecida ao longo da superfície, sendo característica principal do Modelo Contínuo. Nesse contexto, outra condição obtida pelo princípio da conservação de carga é dada por:
+
+\begin{equation}\label{eq:conservacao-carga-continuo}
+\int_{\partial \Omega} g \diff s = 0,
+\end{equation}
+condição que indica que o fluxo de cargas que entra no sistema é o mesmo que sai. 
+
+Conforme descrito por \cite{santana}, para dadas $g$ e $\gamma$, determinar uma solução $u$ de \ref{eq:modelo-continuo} equivale a determinar uma solução $u$ para a equação
+\begin{equation}\label{eq:continuo-fraca}
+    \iint_{\Omega}\gamma(x)\nabla u(x) \nabla v(x) \diff x = \int_{\partial \Omega} gv \diff s, \text{para toda $v$ t.q.} \int_{\partial \Omega} v \diff s = 0,
+\end{equation}
+com $u$ e $v$ nos espaços de funções apropriados, chamada formulação fraca do problema. Apesar desta equação admitir soluções que não são suportadas no modelo \eqref{eq:modelo-continuo}, para funções regulares o suficiente, os dois problemas se tornam equivalentes. Além disso, como explica \citeonline{santana}, para $g,\gamma$ nos conjuntos de funções adequados, a Equação~\eqref{eq:continuo-fraca} admite solução única. Desse modo, temos a garantia que dadas certas correntes aplicadas num corpo de condutividade fixada, há um único potencial elétrico associado.
+
+\subsection{Formulação do Problema Inverso}
+
+Para fins do problema da TIE, temos conhecimento apenas do potencial $u\restr{\partial \Omega}$ restrito à superfície, o qual denotamos por $f=u \restr{\partial \Omega}$. Em especial, pela discussão no parágrafo anterior, para cada corrente $g$ aplicada num corpo de condutividade $\gamma$, teremos um único potencial sobre a fronteira $f=u\restr{\partial \Omega}$ associado. Podemos traduzir isso, definindo para cada $\gamma$ fixa o operador $\Lambda_\gamma$, chamado operador Neumann para Dirichlet (NtD), que associa cada corrente elétrica $g$ ao potencial sobre a superfície $f=\Lambda_\gamma g$ correspondente, o qual prova-se ser um operador linear e inversível \cite{margotti}.
+
+\todo[inline]{Mudar essa parte para o Problema Direto}
+
+A descrição da TIE apresentada no início do Capítulo expressa que o problema consiste em reconstruir a condutividade a partir das correntes aplicadas e potenciais medidos. Apesar de termos uma associação única entre cada corrente $g$ e potencial medido $f$ para cada $\gamma$ fixada, não é garantido que existe uma única $\gamma$ que faz a associação de uma determinada $g$ para uma certa $f$ resultante. Podem existir duas condutividades $\gamma \neq \beta$ tais que para uma certa $g$ tem-se $\Lambda_\gamma g = \Lambda_{\beta} g$.  Em outras palavras, com uma única corrente e um potencial medido, não é possível determinar unicamente a condutividade. A ideia, portanto, é tentar avaliar o que ocorre com diferentes conjuntos de correntes.
+
+\citeonline{margotti} descreve que a partir de cada $\gamma$ é possível definir um operador $F$ que associa cada $\gamma$ a um operador NtD $\Lambda \gamma = F(\gamma)$ correspondente, o qual prova-se ainda ser injetivo e diferenciável. Ou seja, apesar de uma corrente específica poder gerar um mesmo potencial em corpos de condutividades diferentes, cada condutividade define um comportamento específico na associação de correntes e potenciais de modo geral. Assim, pode se esperar que aplicando uma série de correntes distintas, o conjunto de potenciais resultantes há de diferir. Nesse sentido, o Problema Inverso associado da TIE no Modelo Contínuo consiste no problema de reconstruir $\gamma$ a partir das informações do operador $\Lambda_\gamma$, traduzido como o problema $F(\gamma) = \Lambda_\gamma$. 
+
+Uma das desvantagens do Modelo Contínuo é que, por trabalhar com $g$ e $f$ sendo funções em espaços de dimensão infinita, não é possível obter de forma exata o operador $\Lambda_\gamma$. Seria impossível testar o comportamento para todas as $g$ possíveis. Ainda assim, pode-se tentar uma aproximação para esse operador. Isto pode ser feito aplicando uma série de correntes distintas $g_1,g_2,\dots,g_n$, obtendo os potenciais correspondentes $f_1,f_2,\dots,f_n$, conforme descrito por \citeonline{margotti}.
+
+Em suma, no Modelo Contínuo temos o Problema Direto definido por: dado um corpo de condutividade $\gamma$ e uma corrente $g$ aplicada sob sua superfície, determinar o potencial $u$ resultante. Além disso, caracterizamos o Problema Inverso como: aplicadas diferentes correntes $g_1,\dots,g_n$ e medindo os potenciais respectivos $f_1,\dots,f_n$ sobre a superfície, reconstrói-se parcialmente o operador $\Lambda_\gamma$, a fim de obter $\gamma$ tal que $F(\gamma)=\Lambda_\gamma$.
+
+O Modelo Contínuo possui sua importância teórica, principalmente por ter sido o primeiro modelo proposto para o problema e serve como boa base para compreensão das hipóteses envolvidas. Entretanto, ele possui suas desvantagens. Uma delas já comentadas é a dificuldade em reconstruir o operador $\Lambda_\gamma$ descrito. Além disso, em situações práticas não se tem um conhecimento preciso das funções $g$ e $f$ que definem respectivamente a corrente e o potencial ao longo da superfície. Normalmente, os aparelhos usados para aplicação e medição de correntes não fornecem informação de cada ponto específico, mas sim de uma certa região onde estão instalados.  Ainda que se possa contornar essas situações usando técnicas para discretização e aproximação das funções, as reconstruções obtidas acabam sendo mais imprecisas e tendo maior grau de erro \cite{margotti}. 
+
+Desse modo, diferentes modelos foram sendo elaborados, refinando as hipóteses disponíveis a partir dos aspectos práticos que se apresentam na configuração da TIE. Na seção a seguir, descrevemos alguns desses modelos, em especial um que reúne boa parte das características dos demais: o chamado Modelo Completo de Eletrodos.
+
+\section{Modelo Completo de Eletrodos} \label{sec:modelo-completo-eletrodos}
+
+Na seção a seguir descrevemos o Modelo Completo de Eletrodos, que reúne hipóteses e formulações de outros modelos como o Gap Model e o Shunt Model, os quais também serão descritos brevemente. Esses modelos surgem como complementos para o Modelo Contínuo descrito na seção anterior, trazendo mais hipóteses a partir de mais conceitos do eletromagnetismo e das situações observadas em testes com a TIE, buscando tornar o modelo mais preciso. Novamente, trazemos uma descrição das formulações matemáticas e interpretações físicas respectivas para cada hipótese dos modelos abordados. 
+
+\subsection{Hipóteses do Modelo Completo de Eletrodos}
+
+Para a descrição dos modelos desta seção, utilizamos principalmente as hipóteses e modelagens descritas por \citeonline{somersalo}, bem como por \citeonline{borcea:2002}. Novamente consideramos o corpo como um domínio $\Omega \subset \R^2$ simplesmente conexo e Lipschitz, com uma superfície consistindo na fronteira $\partial \Omega \subset \Omega$,  munido de uma certa condutividade $\gamma : \Omega \to \R$, conforme descrito na seção anterior. Além disso, passamos a considerar agora a existência dos eletrodos, componentes em contato com o corpo responsáveis pela aplicação das correntes elétricas e realização das medições necessárias. Supõe-se que os eletrodos estão dispostos ao longo da superfície, disjuntos entre si. Com isso, consideramos um número de $L$ eletrodos $e_1,\dots,e_L\subset \partial \Omega$ como subconjuntos da superfície, tendo a hipótese que $\overline{e_i} \cap \overline{e_j} = \emptyset$, para todo $1\leq i, \leq j \leq L$. 
+
+Continuamos tendo como hipótese a Equação~\eqref{eq:divergencia-livre}, que se trata essencialmente da equação diferencial parcial que descreve o problema em todos os modelos. Ainda se faz válida também a relação dada pela Equação~\eqref{eq:corrente-continua}, porém, a ideia dos modelos discutidos na sequência é trazer algumas hipóteses a mais a respeito das correntes elétricas.
+
+Dada agora a presença dos eletrodos, temos a hipótese de que fora dos eletrodos não há corrente na superfície, pois eles que estão eletricamente carregados e são responsáveis pela condução de eletricidade nela. Além disso, inicialmente pode-se dar a hipótese de que os eletrodos são condutores perfeitos, sendo a corrente constante ao longo deles. Com isso, cada eletrodo $e_i$ tem uma certa corrente total $I_i\in \R$ aplicada, sendo $g: \partial \Omega \to \R$ portanto dada por:
+
+\begin{equation}\label{eq:gap-model}
+g(x) = \begin{cases}
+    \frac{I_i}{|e_i|}, \; \text{ se } x\in e_i, \forall i\in\{1,\dots,L\}\\
+    0, \; \text{ se } x \in \partial \Omega \setminus \bigcup_{j=1}^L e_j,
+\end{cases}
+\end{equation}
+onde $|e_i|$ denota a área ou comprimento do $i$-ésimo eletrodo. O modelo composto das Equações \eqref{eq:divergencia-livre},\eqref{eq:corrente-continua} e \eqref{eq:gap-model} é chamado de \textit{Gap Model}, justamente por considerar a ausência de corrente nos vãos, em inglês ``\textit{gaps}'', entre eletrodos.
+
+Ocorre que o \textit{Gap Model} também apresenta certa imprecisão, devido principalmente à hipótese dos eletrodos terem corrente constante \cite{somersalo}, ainda distanciando as reconstruções obtidas das soluções reais buscadas. Com isso, a hipótese é levemente alterada, considerando não que a corrente é constante sobre cada eletrodo $e_i$, mas sim que se conhece apenas uma corrente média $I_i\in \R$ correspondendo ao fluxo total de correntes elétricas sobre o eletrodo. Isso se traduz na equação:
+
+\begin{equation}\label{eq:shunt-eq}
+ \int_{e_i} g \diff s = I_i, \forall i \in \{1,\dots, L\}.
+\end{equation}
+Todavia, ainda se mantém a hipótese de que a corrente elétrica é nula nas parcelas da superfície fora dos eletrodos, ou seja, que: 
+
+\begin{equation}\label{eq:gap-equation}
+    g(x) = 0, \forall x \in \partial \Omega \setminus \bigcup_{j=1}^L e_j.
+\end{equation}
+
+Unindo as Equações \eqref{eq:divergencia-livre}, \eqref{eq:corrente-continua}, \eqref{eq:shunt-eq} e \eqref{eq:gap-equation} obtemos o chamado \textit{Shunt Model}, recebendo esse nome por considerar o desvio, \textit{``shunt"}, causado pelos eletrodos na corrente elétrica.
+
+Apresentadas hipóteses adicionais sobre as correntes elétricas considerando a presença dos eletrodos, podem ser adicionadas ainda algumas hipóteses relacionadas ao potencial elétrico. Apesar de não considerar a corrente constante, podemos ter como hipótese ainda que o potencial  elétrico é constante ao longo dos eletrodos, tratando-se de uma aproximação razoável. Desse modo, dada a distribuição de potencial gerada sobre o corpo, também modelada como uma função $u: \Omega \to \R$, teremos em cada eletrodo $e_i$ um potencial $u_i \in \R$ medido, tendo a princípio que para cada $i\in \{1,\dots,L\}$ vale a relação $u\restr{e_i}(x)=u_i, \forall x \in e_i$. 
+
+Porém, geralmente na interface entre o interior do corpo e os eletrodos ocorre um fenômeno chamado impedância de contato, causado pela diferença entre os materiais presentes nessa interface, no qual há uma certa discrepância entre o potencial elétrico no corpo e nos eletrodos \cite{somersalo}. Essa discrepância observa-se que é proporcional à corrente elétrica passando sobre o eletrodo em cada ponto. Com isso, para cada $i \in \{1,\dots, L\}$, denotando $U_i\in \R$ o potencial medido em cada eletrodo $e_i$, e as constantes de proporcionalidade $z_i\in \R_+$ chamadas impedâncias de contato em cada eletrodo $e_i$, tal diferença pode ser descrita pela equação:
+
+\begin{equation}\label{eq:impedancia}
+u\restr{e_j}(x) + z_i g(x) = U_i, \text{ com }, \forall x \in e_i, \forall i \in \{1,\dots, L\}.
+\end{equation}
+
+ Em resumo, consideramos um corpo representado no domínio $\Omega\subset \R^2$ suficientemente regular, com superfície descrita pela fronteira $\partial \Omega \subset \Omega$, onde são atrelados $L$ eletrodos $e_1,\dots, e_L \subset \partial\Omega$ tais que $\overline{e_i} \cap \overline{e_j} = \emptyset$ para todo $1\leq i<j \leq L$. Representamos a condutividade desse corpo como uma distribuição $\gamma : \Omega \to \R$. Em cada eletrodo $e_j$ é aplicada uma corrente elétrica $I_j\in \R$, resultando em uma distribuição de potencial elétrico $u :\Omega \to \R$, a qual medida em cada eletrodo $e_j$ gera certos potenciais $U_j\in \R$. Por fim, em cada eletrodo $e_j$ ocorre uma impedância de contato, a qual é medida por uma constante $z_j \in \R_+$ correspondente. Juntando as Equações \eqref{eq:divergencia-livre}, \eqref{eq:shunt-eq}, \eqref{eq:gap-equation} e \eqref{eq:impedancia}, usando ainda que a corrente elétrica $g$ sobre a superfície pode ser descrita na relação dada pela Equação \eqref{eq:corrente-continua} $g(x) = \gamma(x) \frac{\partial u}{\partial \eta}(x) = \gamma(x) \nabla u(x) \cdot \eta(x)$, onde $\eta: \partial \Omega \to \R^2$ é o campo normal unitário externo a $\Omega$, temos o denominado Modelo Completo de Eletrodos, dado por:
+
+ 
+\begin{equation}\label{eq:cem}
+\begin{cases}
+\nabla \cdot (\gamma(x) \nabla u(x)) = 0, \; x\in \Omega \\
+\int_{e_i} \gamma \nabla u \cdot \eta \diff s = I_i, \forall i \in \{1,\dots,L\} \\
+\gamma(x) \nabla u(x) \cdot \eta(x) = 0, \; x \in \partial \Omega \setminus \bigcup_{j=1}^L e_j. \\
+u\restr{e_i} (x) + z_i \gamma(x) \nabla u(x) \cdot \eta(x) = U_i, \forall i \in \{1,\dots, L\},
+\end{cases}
+\end{equation}
+
+Note que em cada configuração desse modelo não trabalhamos com uma única função $g$ descrevendo a corrente, nem uma única $f$ descrevendo o potencial medido sobre a fronteira, mas sim com $L$ correntes $I_1,\dots,I_L \in \R$ e $L$ potenciais $U_1,\dots, U_L \in \R$ medidos sobre os eletrodos. Chamamos cada conjunto de correntes aplicadas numa certa configuração de \textit{padrão de correntes}, representando por um vetor $I=(I_1,\dots,I_L) \in \R^L$. De mesma forma, cada conjunto de potenciais medidos é chamado \textit{padrão de potenciais}, representado por um vetor $U=(U_1,\dots,U_L) \in \R^L$, 
+
+Ainda, pode-se obter conforme descrito por \citeonline{borcea:2002} outras duas condições estabelecidas a partir de propriedades do eletromagnetismo, consistindo essencialmente nos princípios de conservação de carga e aterramento do potencial, representadas respectivamente nas equações:
+
+\begin{align}
+    \sum_{j=1}^{L} I_j = 0, \text{ e } \label{eq:conservacao-carga} \\
+    \sum_{j=1}^{L} U_j = 0 \label{eq:aterramento-potencial},
+\end{align}
+tomando para a segunda equação um  potencial terra como referência para 
+os potenciais medidos. 
+
+\subsection{Formulação do Problema Direto}
+
+Assim como na seção anterior, antes de descrever o Problema Inverso neste modelo, discutiremos se o Problema Direto está bem definido. Isto é, se para um corpo com condutividade $\gamma : \Omega \to \R$ e aplicado um padrão de corrente $I = (I_1,\dots, I_L)$, dadas certas impedâncias de contato $z_1,\dots,z_L \in \R_+$ sobre os eletrodos, existe um único potencial $u: \Omega \to \R$ e padrão de potenciais medidos $U=(U_1,\dots,U_L)$ associados.
+
+Conforme mostrado por \citeonline{somersalo} e descrito em \citeonline{santana}, o modelo com as restrições apresentadas pode ser transformado na seguinte equação variacional, chamada formulação fraca do problema:
+\begin{equation}\label{eq:cem-variacional}
+    \iint_\Omega \gamma (x) \nabla u(x) \cdot \nabla v(x)\diff x + \sum_{l=1}^L \frac{1}{z_l}\int_{e_l} (u-U_l)(v - V_l)\diff s = \sum_{l=1}^L I_l V_l,
+\end{equation}
+dados $v : \Omega \to \R$ e $V = (V_1,\dots, V_L)\in \R^L$ quaisquer tais que $\int_{\partial \Omega} v \diff s = 0$ e $\sum_{j=1}^L V_j = 0$.
+
+\citeonline{somersalo} demonstram que tal formulação é equivalente ao Modelo Completo de Eletrodos, no sentido de que dado um par $(u,U)$ que satisfaz \eqref{eq:cem}, então para qualquer par $(v,V)$ nos espaços apropriados o par $(u,U)$ é solução para a Equação \eqref{eq:cem-variacional}, valendo também a recíproca para um par $(u,U)$ dada $u$ suficientemente regular. 
+
+A princípio, para um certo padrão de correntes $I$ e uma condutividade $\gamma$, a equação acima admite infinitas soluções, diferindo apenas por constantes. Porém, como descrito por \citeonline{santana}, sob determinadas condições para $\gamma$ e $z_1,\dots,z_L$, e a partir das Equações \eqref{eq:conservacao-carga} e \eqref{eq:aterramento-potencial}, mostra-se que para cada $\gamma$, $z_1,\dots,z_L$ e padrão de correntes $I$ existe um único par $(u,U)$ que resolve a equação variacional para todo par $(v,V)$. Em outros termos, para cada condutividade $\gamma$, conhecidas as impedâncias de contato $z_1, …, z_L$ e um padrão de correntes $I$ aplicado, existe um único par de potenciais resultantes e medidos $(u,U)$ que resolve o problema.
+
+\subsection{Formulação do Problema Inverso}
+
+Como explica \citeonline{margotti}, essa unicidade dos potenciais nos garante que dado um corpo com condutividade $\gamma$ podemos definir o operador Neumann para Dirichlet (NtD):
+
+ \begin{equation}
+     \Lambda_\gamma : \R^L \to \R^L,
+ \end{equation}
+ que associa cada padrão de correntes $I \in \R^L$ aplicado ao padrão de potenciais medidos $U\in \R^L$, garantindo ainda que é um operador linear. Esse é o operador que traduz a noção que para um certo corpo com uma condutividade específica, cada padrão de correntes aplicado resultará em um único padrão de potenciais medidos sobre a fronteira. 
+
+Novamente, para um padrão de corrente específico aplicado, há diferentes condutividades que podem associá-lo a um mesmo padrão de potenciais. Isto é, podem ter operadores $\Lambda_\gamma,\Lambda_\beta$ tais que $\Lambda_\gamma I = \Lambda_\beta I$. Porém, para condutividades distintas, aplicando diferentes padrões de correntes, podemos esperar que o conjunto de padrões de potenciais resultantes será distinto. Isto é, dadas $\gamma$ e $\beta$ distintas, gostaríamos de obter que $\Lambda_\gamma \neq \Lambda_\beta$. De fato, como descreve \citeonline{margotti}, novamente pode-se definir um operador $F$
+que associa cada $\gamma$ ao operador $\Lambda_\gamma = F(\gamma)$.
+
+\todo[inline]{Mudar a definição do NtD pro Problema Direto}
+
+Temos, portanto, um Problema Inverso associado que se trata de reconstruir $\gamma$ a partir das informações de $\Lambda_\gamma$, traduzido no Problema Inverso $F(\gamma) = \Lambda_\gamma$. Mais uma vez, o Problema Inverso da TIE consistirá em aplicar diferentes padrões de correntes $I^{(i)}$, medindo os padrões de potenciais $U^{(i)}$ associados, buscando reconstruir $\gamma$ através das informações de $\Lambda_\gamma$.
+
+Diferente do Modelo Contínuo, aqui os padrões de corrente e de potenciais não são mais funções, mas sim vetores em $\R^L$. Isso, aliado ao fato de $\Lambda_\gamma$ serem operadores lineares, a princípio torna a reconstrução desses operadores muito mais simples e precisa. De fato, sabendo que $\R^L$ é um espaço vetorial de dimensão finita, se os padrões $I^{(1)},\dots, I^{(L)}\in \R^L$ formam uma base para esse espaço, pode-se reconstruir $\Lambda_\gamma$ se for conhecido que $\Lambda_\gamma I^{(j)} = U^{(j)}$, para todo $j \in \{1,\dots,L\}$. Ainda, dadas algumas propriedades interessantes de $\Lambda_\gamma$, são necessários menos vetores ainda para sua reconstrução \cite{margotti}.
+
+Desse modo, costuma-se aplicar um número de $l$ de padrões de correntes $I^{(1)},\dots,I^{(k)}\in \R^L$, os quais agrupamos por um vetor $\mathfrak I \in \R^{k\times L}$ dado por $\mathfrak I = (I^{(1)},\dots,I^{(k)})$ Ainda, sendo $U^{j} = \Lambda_\gamma I^{(j)}$ o padrão de potenciais gerado respectivamente pelo padrão de correntes $I^{(j)}$, com $j\in \{1,\dots,k\}$, temos também um vetor $\Gamma_\gamma \in \R^{l \times L}$ composto pelos potenciais medidos respectivos $ \Gamma_\gamma = (U^{(1)},\dots,U^{(k)})$.
+
+Conforme discutido, cada vetor de padrões de correntes $\mathfrak I$ irá gerar um vetor de potenciais $\Gamma_\gamma$ distinto, dependendo do operador $\Lambda_\gamma$ responsável pela associação. Sob outra perspectiva, dado um conjunto de correntes $\mathfrak I$ fixadas, cada condutividade $\gamma$ irá resultar em um vetor de potenciais $\Gamma_\gamma$ respectivo.  Isso nos permite, fixando um vetor de padrões de correntes $\mathfrak I$  definir o operador $F_{\mathfrak I}$ que associa cada condutividade $\gamma$ ao vetor de padrões de potenciais $F_{\mathfrak I}(\gamma) = \Gamma_\gamma \in \R^{l \times L}$ correspondente.
+
+Desse modo, o Problema Inverso da TIE no Modelo Completo de Eletrodos pode ser modelado matematicamente da seguinte maneira: dado um vetor de padrões de corrente $\mathfrak I = (I^{(1)},\dots,I^{(l)})\in\R^{l \times L}$ fixo, obtendo o vetor de potenciais medidos $\Gamma_\gamma = ((U^{(1)},\dots,U^{(l)}) \in \R^{l \times L}$, determinar $\gamma$ tal que:
+
+\begin{equation} \label{eq:cem-problema-inverso}
+    F_{\mathfrak I}(\gamma) = \Gamma_\gamma.
+\end{equation}
+
+\todo[inline]{Talvez destacar aqui que esse é o problema inverso na "prática"}
+
+No restante deste trabalho, estaremos interessados em resolver o Problema Inverso descrito pela Equação \eqref{eq:cem-problema-inverso}. Este, conforme descrito por \citeonline{margotti}, trata-se um Problema Inverso ``severamente Mal-Posto", sendo então interessante buscar soluções aproximadas através do uso de Métodos de Regularização apropriados. \citeonline{margotti} ainda relata que $F_{\mathfrak I}$ trata-se de um operador diferenciável, porém não-linear. Isso descarta a possibilidade de utilizar Métodos de Regularização lineares, mas ainda nos permite usar métodos do tipo Newton-Inexato, conforme discutidos no Capítulo anterior. Descreveremos em mais detalhe como a derivada desse operador pode ser obtida e utilizada no seguinte Capítulo.
+
+Nesse Capítulo, tratamos dos principais modelos que escrevem do problema da Tomografia por Impedância Elétrica, buscando trazer uma descrição mais intuitiva em torno dos conceitos envolvidos. Detalhes mais técnicos dos resultados comentados podem ser encontrados nos trabalhos citados, como no de \citeonline{santana}, \citeonline{somersalo} e \citeonline{borcea:2002}, bem como nos trabalhos de \citeonline{kirsch} e \citeonline{margotti}. 
+
+Até então, foram discutidos apenas os aspectos teóricos dos modelos, em especial focando em definir os operadores envolvidos e descrever que de fato estão bem definidos. Todavia, não descrevemos como de fato calcular esses operadores, ou seja, como trabalhar na prática com esse Problema Inverso. No geral, esse problema é tratado numericamente, pois, para as equações e modelos apresentados, não se conhece maneiras de obter soluções analíticas, isto é, em termos de funções ou expansões em séries elementares. Por exemplo, ainda que se tenha a informação exata da função $\gamma$, não se conhece como obter de forma exata uma solução $u$ para o modelo no Sistema \eqref{eq:cem} ou um par $(u,U)$ para a Equação Variacional \eqref{eq:cem-variacional}. Com isso, algumas técnicas de discretização e métodos numéricos são aplicados para poder trabalhar com o problema em questão. 
+
+Portanto, no Capítulo a seguir, descrevemos brevemente como trabalhar computacionalmente com esse problema, focando em particular no Modelo Completo de Eletrodos, além de relatar os experimentos numéricos feitos com os diferentes Métodos de Regularização explorados.

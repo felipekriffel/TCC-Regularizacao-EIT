@@ -1,0 +1,51 @@
+\chapter{Teoria de Regularização} 
+\label{cap:teoria-regularizacao}
+\section{Problemas Inversos}
+
+Vários problemas modelados a partir de situações físicas, de engenharia e afins, no qual o objetivo é tentar identificar um objeto a partir de como ele afeta ou é afetado por um determinado processo, são classificados como Problemas Inversos. Esses problemas podem ser caracterizados na definição a seguir, dada por \cite{kirsch}. No que segue, chamamos \textit{operador} qualquer função $K:X \to Y$ entre dois espaços vetoriais, utilizando a notação $K(x) = Kx$.
+
+\begin{defin}
+Dados $X,Y$ espaços vetoriais e um operador $K: X \to Y$ conhecido, denominamos: 
+\begin{itemize}
+    \item \textbf{Problema Direto} o problema  que consiste em obter o valor $Kx$ dado qualquer $x \in X$;
+    \item \textbf{Problema Inverso} o problema dado por, a partir de um certo $y\in Y$ conhecido, obter $x \in X$ tal que $Kx = y$, o qual chamamos de solução do problema.
+\end{itemize}
+
+Normalmente, nos referimos a um Problema Inverso referente ao operador $K$ como "Problema Inverso $Kx=y$". \qed
+\end{defin}
+	
+Há uma grande gama de Problemas Inversos de diferentes naturezas e comportamentos, que podem ou não apresentar soluções a depender dos dados apresentados, e cuja abordagem para encontrar ou aproximar uma solução difere em cada situação. Tais fatores dependem essencialmente do operador $K$ envolvido e dos espaços no qual ele opera, seu domínio e imagem, os quais ainda levam a diferentes categorias de Problemas Inversos. Uma classificação que nos interessa em especial é a de Problemas Bem-Postos e Mal-Postos, que podem ser caracterizados na definição a seguir.  
+
+\begin{defin}\label{def:problema-bem-posto}
+Dados dois espaços normados $X$ e $Y$, um operador $K:X\to Y$, dizemos que o Problema Inverso $Kx = y$ é Bem-Posto, segundo Hadamard, se as seguintes condições são satisfeitas:
+\begin{enumerate}
+    \item Para cada $y \in Y$ existe ao menos um $x \in X$ de forma que $Kx = y$;
+    \item Para qualquer $y\in Y$ há no máximo um $x\in X$ tal que $Kx = y$;
+    \item Se uma sequência $(x_n)_{n \in \mathbb N}$ de elementos e um elemento $x$ em $X$ são tais que $Kx_n \to Kx$, então segue que $x_n\to x$.
+\end{enumerate}
+
+Tais condições ainda são chamadas, respectivamente, de Existência, Unicidade e Estabilidade das soluções. Um Problema Inverso é dito Mal-Posto caso qualquer uma das três condições acima não for atendida. \qed
+    
+\end{defin}
+
+\begin{obs}
+Pode-se notar que essa definição equivale a afirmar que o operador $K$ é bijetivo e tem inversa $K^{-1}:Y \to X$ contínua.
+\end{obs}
+
+Inicialmente, existia a concepção de que se o Problema Inverso não apresentava alguma das condições listadas, então o problema não estava correto, suas hipóteses estavam mal colocadas, pois se esperava que as soluções sempre fossem bem determinadas. Daí, o termo "Mal-Posto" empregado \cite{?}. Ocorre que, à medida que o tema foi sendo mais estudado e diferentes problemas se enquadravam como Problemas Inversos, percebeu-se que muitos deles não haviam problemas quanto a suas modelagens físicas e matemáticas, mas mesmo assim eram classificados como Mal-Postos. Com isso, foi se entendendo que essas características podiam aparecer dependendo da natureza do problema, e a noção de má-posição passou a ser compreendida mais relacionada ao comportamento das soluções.
+
+Nesse sentido, o conceito de Problemas Bem-Postos pode ser entendido como o quão 'bem-comportado' é um Problema Inverso com relação às suas soluções. Essencialmente, como se procura uma solução, é preciso primeiro saber se o problema admite solução e se esta é única. Além disso, grande parte dos métodos convencionais para aproximar soluções de equações do tipo $F(x)=y$ se baseia em gerar sequências $(x_n)$ tais que $F(x_n)$ se aproxime do valor conhecido $y$. Assim, torna-se relevante saber se é possível obter uma aproximação satisfatória para uma solução ao usar um método dessa natureza.
+
+
+A Definição \ref{def:problema-bem-posto} é um tanto estrita, no sentido de que trabalha apenas no caso de problemas com soluções únicas, necessitando que o operador $K$ seja bijetivo. Veremos mais adiante como esse conceito pode ser generalizado com outras noções de solução, o que ocorre de maneira particular para cada tipo de Problema Inverso.
+
+Outra classificação que diferencia certos Problemas Inversos, sendo de grande relevância no estudo de soluções e métodos apropriados, é quanto à linearidade do problema. Operadores lineares entre espaços vetoriais possuem diversas propriedades interessantes, as quais podem ser de grande utilidade no estudo de Problemas Inversos definidos com operadores dessa natureza. Tal classificação é dada na definição a seguir.
+
+\begin{defin}
+Dados $X, Y$ espaços vetoriais e um operador $A: X \to Y$, dizemos que o Problema Inverso $Kx = y$ é linear se o operador $K$ é linear. Isto é, se para quaisquer $\alpha, \beta \in \mathbb R$ e quaisquer $x,z \in X$ tem-se:
+\begin{equation*}
+    K(\alpha x + \beta z) = \alpha Kx + \beta Kz.
+\end{equation*}  
+
+Chamamos ainda um operador de não-linear aquele que não atende a propriedade de ser linear. Um Problema Inverso é dito não-linear se o operador $K$ é não-linear\qed
+\end{defin}
